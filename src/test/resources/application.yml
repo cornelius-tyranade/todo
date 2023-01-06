@@ -1,0 +1,29 @@
+server:
+  port: 5002
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:todo-db;DB_CLOSE_DELAY=-1
+    username: admin
+    password: ADMINadmin123
+    driverClassName: org.h2.Driver
+  flyway:
+    enabled: true
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: false
+
+
+
