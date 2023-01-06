@@ -2,8 +2,16 @@
 
 > Simple online TODO API with user authentication.
 
+## WAR File
+The generated WAR file is too big to upload to GIT. GIT maximum file size to upload is 25 MB.
+So after downloaded the source code, please run below command to generate the WAR file in target folder.
+
+```sh
+$ mvn clean package
+```
+
 ## Approach
-This author is aware of the TODO application's simplicity and that it can be made using a simple monolithic approach.
+The author is aware of the TODO application's simplicity and that it can be made using a simple monolithic approach.
 However, the authors choose a distributed approach because the authors believe this application is only a sample application, 
 so the types of applications in the actual project will be far more complex. 
 Therefore the microservices architecture is a good solution for big and complex project. 
