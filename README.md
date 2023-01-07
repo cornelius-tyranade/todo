@@ -109,24 +109,31 @@ The use of this web client is only for demonstration of using the TODO API.
    ```
 
 3. Go to `localhost:3000` to see the homepage.
+
    <img src="images/h1.png" width="600" />
 
 4. Go to `localhost:3000/dashboard`, put correct credentials.
+
     <img src="images/h2.png" width="600" />
 
 5. After login, user will be arrived at dashboard page.
+
    <img src="images/h3.png" width="600" />
 
 6. Click task, it will show user's TODO list.
+
    <img src="images/h4.png" width="600" />
 
 7. User can add task by clicking Add Task button on top left.
+
    <img src="images/h5.png" width="600" />
 
 8. User can see detail of the TODO by clicking description hyperlink.
+
    <img src="images/h6.png" width="600" />
 
 9. User can Update and Delete TODO by clicking edit button in task list or in detail page.
+
    <img src="images/h7.png" width="600" />
 
 ## Authors
