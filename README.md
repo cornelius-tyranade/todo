@@ -26,7 +26,7 @@ The architecture design follows an aggregator pattern, which splits large comple
 
 ![Upgraded High Level Architecture](images/d2.png)
 
-Authentication and todo modules, for example, can be separated into separate microservices.
+User authentication and todo modules, for example, can be separated into separate microservices.
 In this way, the system scale can be quickly increased or decreased based on needs.
 It is also possible to add an API Gateway, which acts as authentication, network routing and load balancer, if there are a lot of users.
 
@@ -94,7 +94,8 @@ This token need to put in header as authentication call other services.
 
 ### Front End Testing
 It should be noted that the client web service used is a **recycling** of the **previous author's project**.
-The use of this web client is only for demonstration of using the TODO API.
+The use of this web client is only for demonstration of using the TODO API. 
+Don't forget to turn on the back end server first before running the web client.
 
 1. Download the front end source code, and install the node modules using below command:
 
