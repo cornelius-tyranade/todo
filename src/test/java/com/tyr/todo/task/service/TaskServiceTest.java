@@ -1,6 +1,8 @@
 package com.tyr.todo.task.service;
 
+import com.tyr.todo.core.exception.ApiException;
 import com.tyr.todo.core.helper.FunctionHelper;
+import com.tyr.todo.core.model.ApiExceptionEnum;
 import com.tyr.todo.task.entity.Task;
 import com.tyr.todo.task.model.Status;
 import com.tyr.todo.task.model.TaskDTO;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -79,6 +82,22 @@ class TaskServiceTest {
     }
 
     @Test
+    public void willThrowWhenSelectTaskWithInvalidTaskId() {
+        ApiException apiException = ApiException.builder()
+                .errorCode(ApiExceptionEnum.NOT_FOUND.getErrorCode())
+                .errorMessage(ApiExceptionEnum.NOT_FOUND.getErrorMessage())
+                .build();
+
+        when(functionHelper.constructApiException(ApiExceptionEnum.NOT_FOUND)).thenReturn(apiException);
+        when(taskRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> taskService.selectTask(TaskDTO.builder().id(UUID.randomUUID()).build()))
+                .isInstanceOf(ApiException.class)
+                .extracting("errorMessage")
+                .isEqualTo("Record was not found");
+    }
+
+    @Test
     public void canAddTask() {
         OffsetDateTime offsetDateTime = OffsetDateTime.parse("2022-06-01T00:00:00+00:00");
         User user = User.builder().username(username).build();
@@ -125,6 +144,22 @@ class TaskServiceTest {
     }
 
     @Test
+    public void willThrowWhenUpdateTaskWithInvalidTaskId() {
+        ApiException apiException = ApiException.builder()
+                .errorCode(ApiExceptionEnum.NOT_FOUND.getErrorCode())
+                .errorMessage(ApiExceptionEnum.NOT_FOUND.getErrorMessage())
+                .build();
+
+        when(functionHelper.constructApiException(ApiExceptionEnum.NOT_FOUND)).thenReturn(apiException);
+        when(taskRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> taskService.updateTask(TaskDTO.builder().id(UUID.randomUUID()).build()))
+                .isInstanceOf(ApiException.class)
+                .extracting("errorMessage")
+                .isEqualTo("Record was not found");
+    }
+
+    @Test
     public void canDeleteTask() {
         UUID uuid = UUID.randomUUID();
         OffsetDateTime offsetDateTime = OffsetDateTime.parse("2022-06-01T00:00:00+00:00");
@@ -139,4 +174,19 @@ class TaskServiceTest {
         verify(taskRepository, times(1)).delete(task);
     }
 
+    @Test
+    public void willThrowWhenDeleteTaskWithInvalidTaskId() {
+        ApiException apiException = ApiException.builder()
+                .errorCode(ApiExceptionEnum.NOT_FOUND.getErrorCode())
+                .errorMessage(ApiExceptionEnum.NOT_FOUND.getErrorMessage())
+                .build();
+
+        when(functionHelper.constructApiException(ApiExceptionEnum.NOT_FOUND)).thenReturn(apiException);
+        when(taskRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> taskService.deleteTask(TaskDTO.builder().id(UUID.randomUUID()).build()))
+                .isInstanceOf(ApiException.class)
+                .extracting("errorMessage")
+                .isEqualTo("Record was not found");
+    }
 }
