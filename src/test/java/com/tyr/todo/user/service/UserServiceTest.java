@@ -4,9 +4,12 @@ import com.tyr.todo.core.helper.FunctionHelper;
 import com.tyr.todo.user.entity.User;
 import com.tyr.todo.user.model.UserDTO;
 import com.tyr.todo.user.repository.UserRepository;
+
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
@@ -15,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -54,6 +58,10 @@ class UserServiceTest {
 
         verify(functionHelper, times(1)).convert(UserDTO.builder().username(username).build(), User.class);
         verify(userRepository, times(1)).findByUsername(username);
+        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(userArgumentCaptor.capture());
+        User capturedUser = userArgumentCaptor.getValue();
+        assertEquals(capturedUser.getUsername(), username);
     }
 
     @Test
@@ -66,6 +74,10 @@ class UserServiceTest {
 
         verify(bCryptPasswordEncoder, times(1)).encode("updated_password");
         verify(userRepository, times(1)).findByUsername(username);
+        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(userArgumentCaptor.capture());
+        User capturedUser = userArgumentCaptor.getValue();
+        assertEquals(capturedUser.getUsername(), username);
     }
 
     @Test

@@ -13,6 +13,7 @@ import com.tyr.todo.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,6 +39,7 @@ class TaskServiceTest {
     private TaskService taskService;
 
     private final String username = "test";
+    private final String description = "Buy Milk";
 
     @BeforeEach
     public void init() {
@@ -70,7 +73,7 @@ class TaskServiceTest {
 
         when(taskRepository.findById(any(UUID.class))).thenReturn(Optional.of(Task.builder().id(uuid).build()));
 
-        taskService.selectTask(TaskDTO.builder().id(uuid).description("Buy Milk").status(Status.UNCHECKED).build());
+        taskService.selectTask(TaskDTO.builder().id(uuid).description(description).status(Status.UNCHECKED).build());
 
         verify(taskRepository, times(1)).findById(uuid);
     }
@@ -79,17 +82,23 @@ class TaskServiceTest {
     public void canAddTask() {
         OffsetDateTime offsetDateTime = OffsetDateTime.parse("2022-06-01T00:00:00+00:00");
         User user = User.builder().username(username).build();
-        Task task = Task.builder().user(user).description("Buy Milk").status(Status.UNCHECKED).createDate(offsetDateTime).build();
+        Task task = Task.builder().user(user).description(description).status(Status.UNCHECKED).createDate(offsetDateTime).build();
 
         when(userService.selectUser(any(UserDTO.class))).thenReturn(user);
         when(taskRepository.save(any(Task.class))).thenReturn(task);
         when(functionHelper.getOffsetDateTime()).thenReturn(offsetDateTime);
 
-        taskService.addTask(TaskInputDTO.builder().username(username).description("Buy Milk").status(Status.UNCHECKED).build());
+        taskService.addTask(TaskInputDTO.builder().username(username).description(description).status(Status.UNCHECKED).build());
 
         verify(userService, times(1)).selectUser(UserDTO.builder().username(username).build());
         verify(functionHelper, times(1)).getOffsetDateTime();
         verify(taskRepository, times(1)).save(task);
+        ArgumentCaptor<Task> taskArgumentCaptor = ArgumentCaptor.forClass(Task.class);
+        verify(taskRepository).save(taskArgumentCaptor.capture());
+        Task capturedTask = taskArgumentCaptor.getValue();
+        assertEquals(capturedTask.getUser().getUsername(), username);
+        assertEquals(capturedTask.getDescription(), description);
+        assertEquals(capturedTask.getStatus(), Status.UNCHECKED);
     }
 
     @Test
@@ -97,17 +106,22 @@ class TaskServiceTest {
         UUID uuid = UUID.randomUUID();
         OffsetDateTime offsetDateTime = OffsetDateTime.parse("2022-06-01T00:00:00+00:00");
         User user = User.builder().username(username).build();
-        Task task = Task.builder().user(user).description("Buy Milk").status(Status.UNCHECKED).createDate(offsetDateTime).build();
+        Task task = Task.builder().user(user).description(description).status(Status.UNCHECKED).createDate(offsetDateTime).build();
 
         when(taskRepository.findById(any(UUID.class))).thenReturn(Optional.ofNullable(task));
         when(taskRepository.save(any(Task.class))).thenReturn(task);
         when(functionHelper.getOffsetDateTime()).thenReturn(offsetDateTime);
 
-        taskService.updateTask(TaskDTO.builder().id(uuid).build());
+        taskService.updateTask(TaskDTO.builder().id(uuid).description(description).status(Status.UNCHECKED).build());
 
         verify(taskRepository, times(1)).findById(uuid);
         verify(functionHelper, times(1)).getOffsetDateTime();
         verify(taskRepository, times(1)).save(task);
+        ArgumentCaptor<Task> taskArgumentCaptor = ArgumentCaptor.forClass(Task.class);
+        verify(taskRepository).save(taskArgumentCaptor.capture());
+        Task capturedTask = taskArgumentCaptor.getValue();
+        assertEquals(capturedTask.getDescription(), description);
+        assertEquals(capturedTask.getStatus(), Status.UNCHECKED);
     }
 
     @Test
@@ -115,7 +129,7 @@ class TaskServiceTest {
         UUID uuid = UUID.randomUUID();
         OffsetDateTime offsetDateTime = OffsetDateTime.parse("2022-06-01T00:00:00+00:00");
         User user = User.builder().username(username).build();
-        Task task = Task.builder().user(user).description("Buy Milk").status(Status.UNCHECKED).createDate(offsetDateTime).build();
+        Task task = Task.builder().user(user).description(description).status(Status.UNCHECKED).createDate(offsetDateTime).build();
 
         when(taskRepository.findById(any(UUID.class))).thenReturn(Optional.ofNullable(task));
 
