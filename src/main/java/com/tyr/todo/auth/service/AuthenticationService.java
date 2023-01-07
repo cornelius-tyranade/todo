@@ -44,6 +44,8 @@ public class AuthenticationService {
 
         return AuthenticationDTO.builder()
                 .token(jwtService.generateToken(user))
+                .name(user.getFirstName() + " " + user.getLastName())
+                .role(user.getRole())
                 .build();
     }
 }

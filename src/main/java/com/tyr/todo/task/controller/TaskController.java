@@ -18,9 +18,15 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping("inquiry/all")
-    public TaskPaginationDTO selectAllTasks(@RequestBody TaskPaginationInputDTO taskPaginationInputDTO, @RequestAttribute("extractedUsername") String username) {
-        taskPaginationInputDTO.setUsername(username);
-        return taskService.selectTasksByUsername(taskPaginationInputDTO);
+    public TaskPaginationDTO selectAllTasks(@RequestParam("currentPage") int currentPage, @RequestParam("pageSize") int pageSize, @RequestAttribute("extractedUsername") String username) {
+        return taskService.selectTasksByUsername(
+                TaskPaginationInputDTO
+                        .builder()
+                        .username(username)
+                        .currentPage(currentPage)
+                        .pageSize(pageSize)
+                        .build()
+        );
     }
 
     @PostMapping("retrieve")
