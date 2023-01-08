@@ -57,8 +57,8 @@ Unit tests are written for the repository interface and service layer.
 4. Use flyway to organizing database script and versioning.
 
 ## Performance
-The author embeds the pagination feature when loading tasks, so that the performance of the client application remains stable.
-Spring Boot's built-in features such as dependency injection and lazy loading also improve application performance.
+The author embeds the **pagination** feature when loading tasks, so that the performance of the client application remains stable.
+Spring Boot's built-in features such as **dependency injection** and **lazy loading** also improve application performance.
 
 ## Security
 
