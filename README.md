@@ -61,6 +61,8 @@ The author embeds the pagination feature when loading tasks, so that the perform
 Spring Boot's built-in features such as dependency injection and lazy loading also improve application performance.
 
 ## Security
+
+### API Security
 Spring security and JWT are used by the author to implement API security.
 The authorization token can only be obtained after the user logs in.
 Whenever user call another API, this token is sent as part of the request header.
@@ -75,6 +77,11 @@ If the credentials are legitimate, JWTFilter will check them against the databas
 When all of these conditions are met, 
 JWTService will update the Spring Security Context Holder, 
 and the controller will provide an HTTP status code of 200 to the user.
+
+### Validations
+A check is conducted on both the client and the server side to ensure that field requests are correct. 
+The **Formik** node library can be used to check the input form entered by the user on the client side. 
+As for server side validation, it utilizes the **Hibernate Validator** to validate the fields in the API request.
 
 ## Testing
 
