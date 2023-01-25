@@ -145,4 +145,4 @@ Don't forget to turn on the back end server first before running the web client.
    <img src="images/h7.png" width="600" />
 
 ## Authors
-- **Cornelius** - _Initial work_ - [cornelius-tyranade](https://github.com/cornelius-tyranade) - cornelius.works@gmail.com
+- **Cornelius** - _Initial work_ - [cornelius-tyranade](https://github.com/cornelius-tyranade) - tyranadeisn1@gmail.com
