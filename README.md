@@ -1,4 +1,4 @@
-# TODO Web Application
+# TODO Web Service Application
 
 > Simple online TODO API with user authentication.
 
